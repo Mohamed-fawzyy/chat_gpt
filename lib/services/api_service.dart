@@ -14,7 +14,7 @@ class ApiService {
         Uri.parse('$BASE_URL/models'),
         headers: {'Authorization': 'Bearer $API_KEY'},
       );
-      print('err33');
+
       final Map jsonResponse = jsonDecode(response.body);
       if (jsonResponse['error'] != null) {
         throw HttpException(jsonResponse['error']['message']);
