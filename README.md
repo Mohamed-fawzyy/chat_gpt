@@ -1,16 +1,44 @@
-# chat_gpt
+# Build ChatGPT App in Flutter using OpenAI API<br><br>
 
-A new Flutter project.
+# **HUGE UPDATE:**
 
-## Getting Started
+The new Chat API now calls gpt-3.5-turbo, the same model used in the ChatGPT product. This means that you'll get even better results from the API. 
 
-This project is a starting point for a Flutter application.
+Make sure you have the valid subscribed API KEY.
 
-A few resources to get you started if this is your first Flutter project:
+**Important NOTE:** 
+This project is not a data science, but is relying on the OpenAI API which is the App that created ChatGPT.<br><br>
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+This project covers how to integrate the Rest API in a Flutter application.<br>
+The course mostly focuses on the REST API integration in Flutter<br><br>
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+**Project prerequisites:**<br>
+* Basic knowledge in programming to get started <br>
+* A basic understanding of Flutter and good knowledge are recommended <br>
+
+
+**How this project can be of help:** <br>
+* Gaining more knowledge in Flutter and Rest API integration <br>
+* Building a ChatBOT App <br>
+* HTTP requests <br>
+* JSON serialization <br>
+* Automatic list scrolling <br>
+* Error Handling <br>
+* Clean and Clear design <br>
+* The minimum amount of code, with Provider state management <br>
+
+**What's in the project:** <br>
+* Provider State management <br>
+* Clean code and avoid Boilerplate code <br>
+* Managing and updating packages <br>
+* Theming <br>
+* Flutter general AppBars <br>
+* Reusable codes for widgets and functions. <br>
+* Flutter ListView Builder <br>
+
+
+**Requirements:** <br>
+* Windows application development OR Mac application development  <br>
+* Access to a computer with an internet connection. <br>
+* and you are ready for the journey <br>
+
