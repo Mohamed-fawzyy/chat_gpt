@@ -2,13 +2,13 @@
 
 import 'package:chat_gpt/constants/constants.dart';
 import 'package:chat_gpt/provider/models_provider.dart';
-import 'package:chat_gpt/services/api_service.dart';
 import 'package:chat_gpt/services/assets_manager.dart';
 import 'package:chat_gpt/widgets/chat_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:provider/provider.dart';
 
+import '../provider/chat_provider.dart';
 import '../services/services.dart';
 
 class ChatScreen extends StatefulWidget {
@@ -21,17 +21,30 @@ class ChatScreen extends StatefulWidget {
 class _ChatScreenState extends State<ChatScreen> {
   bool _isTyping = false;
 
-  final TextEditingController _textEditingController = TextEditingController();
+  late final TextEditingController _textEditingController;
+  late final ScrollController _listScrollController;
+  late final FocusNode _focusNode;
+
+  @override
+  void initState() {
+    _textEditingController = TextEditingController();
+    _listScrollController = ScrollController();
+    _focusNode = FocusNode();
+    super.initState();
+  }
 
   @override
   void dispose() {
-    _textEditingController;
+    _textEditingController.dispose();
+    _listScrollController.dispose();
+    _focusNode.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     final modelProvider = Provider.of<ModelsProvider>(context, listen: false);
+    final chatProvider = Provider.of<ChatProvider>(context, listen: false);
     return Scaffold(
       appBar: AppBar(
         title: const Text('ChatGPT'),
@@ -56,13 +69,12 @@ class _ChatScreenState extends State<ChatScreen> {
           children: [
             Flexible(
               child: ListView.builder(
-                itemCount: chatMessages.length,
+                controller: _listScrollController,
+                itemCount: chatProvider.getChatList.length,
                 itemBuilder: (context, index) {
                   return ChatWidget(
-                    msg: chatMessages[index]['msg'].toString(),
-                    chatIndex: int.parse(
-                      chatMessages[index]['chatIndex'].toString(),
-                    ),
+                    msg: chatProvider.getChatList[index].msg,
+                    chatIndex: chatProvider.getChatList[index].chatIndex,
                   );
                 },
               ),
@@ -86,9 +98,15 @@ class _ChatScreenState extends State<ChatScreen> {
                   children: [
                     Expanded(
                       child: TextField(
+                        focusNode: _focusNode,
                         style: const TextStyle(color: Colors.white),
                         controller: _textEditingController,
-                        onSubmitted: (value) {},
+                        onSubmitted: (_) async {
+                          await _sendMessage(
+                            modelProvider: modelProvider,
+                            chatProvider: chatProvider,
+                          );
+                        },
                         decoration: const InputDecoration.collapsed(
                           hintText: 'Ask me anything',
                           hintStyle: TextStyle(color: Colors.grey),
@@ -97,21 +115,10 @@ class _ChatScreenState extends State<ChatScreen> {
                     ),
                     IconButton(
                       onPressed: () async {
-                        try {
-                          setState(() {
-                            _isTyping = true;
-                          });
-                          await ApiService.sendMessage(
-                            message: _textEditingController.text,
-                            modelId: modelProvider.currentModel,
-                          );
-                        } catch (error) {
-                          print('error--> $error');
-                        } finally {
-                          setState(() {
-                            _isTyping = false;
-                          });
-                        }
+                        await _sendMessage(
+                          modelProvider: modelProvider,
+                          chatProvider: chatProvider,
+                        );
                       },
                       icon: const Icon(
                         Icons.send,
@@ -126,5 +133,39 @@ class _ChatScreenState extends State<ChatScreen> {
         ),
       ),
     );
+  }
+
+  void scrollListToEnd() {
+    _listScrollController.animateTo(
+      _listScrollController.position.maxScrollExtent,
+      duration: const Duration(seconds: 1),
+      curve: Curves.ease,
+    );
+  }
+
+  Future<void> _sendMessage(
+      {required ModelsProvider modelProvider,
+      required ChatProvider chatProvider}) async {
+    {
+      try {
+        setState(() {
+          _isTyping = true;
+          chatProvider.addUserMessage(msg: _textEditingController.text);
+          _textEditingController.clear();
+          _focusNode.unfocus();
+        });
+        await chatProvider.sendMessageAndGetResponse(
+          msg: _textEditingController.text,
+          chosenModel: modelProvider.currentModel,
+        );
+      } catch (error) {
+        print('error--> $error');
+      } finally {
+        setState(() {
+          scrollListToEnd();
+          _isTyping = false;
+        });
+      }
+    }
   }
 }

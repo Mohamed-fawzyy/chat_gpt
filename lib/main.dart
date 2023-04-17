@@ -1,3 +1,4 @@
+import 'package:chat_gpt/provider/chat_provider.dart';
 import 'package:chat_gpt/provider/models_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -18,9 +19,10 @@ class MyApp extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (_) => ModelsProvider()),
+        ChangeNotifierProvider(create: (_) => ChatProvider()),
       ],
       child: MaterialApp(
-        title: 'Flutter Demo',
+        title: 'ChatGPT',
         debugShowCheckedModeBanner: false,
         theme: ThemeData(
           scaffoldBackgroundColor: scaffoldBackgroundColor,
