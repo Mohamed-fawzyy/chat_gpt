@@ -1,9 +1,12 @@
 // ignore_for_file: avoid_print
 
+import 'dart:math';
+
 import 'package:chat_gpt/constants/constants.dart';
 import 'package:chat_gpt/provider/models_provider.dart';
 import 'package:chat_gpt/services/assets_manager.dart';
 import 'package:chat_gpt/widgets/chat_widget.dart';
+import 'package:chat_gpt/widgets/text_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:provider/provider.dart';
@@ -70,7 +73,7 @@ class _ChatScreenState extends State<ChatScreen> {
             Flexible(
               child: ListView.builder(
                 controller: _listScrollController,
-                itemCount: chatProvider.getChatList.length,
+                itemCount: chatProvider.getChatListLength,
                 itemBuilder: (context, index) {
                   return ChatWidget(
                     msg: chatProvider.getChatList[index].msg,
@@ -101,11 +104,10 @@ class _ChatScreenState extends State<ChatScreen> {
                         focusNode: _focusNode,
                         style: const TextStyle(color: Colors.white),
                         controller: _textEditingController,
-                        onSubmitted: (_) async {
-                          await _sendMessage(
-                            modelProvider: modelProvider,
-                            chatProvider: chatProvider,
-                          );
+                        onChanged: (_) {
+                          setState(() {
+                            _textEditingController.text.trim();
+                          });
                         },
                         decoration: const InputDecoration.collapsed(
                           hintText: 'Ask me anything',
@@ -114,16 +116,25 @@ class _ChatScreenState extends State<ChatScreen> {
                       ),
                     ),
                     IconButton(
-                      onPressed: () async {
-                        await _sendMessage(
-                          modelProvider: modelProvider,
-                          chatProvider: chatProvider,
-                        );
-                      },
-                      icon: const Icon(
-                        Icons.send,
-                        color: Colors.white,
-                      ),
+                      onPressed: _textEditingController.text.isEmpty
+                          ? null
+                          : () async {
+                              await _sendMessageFCT(
+                                modelProvider: modelProvider,
+                                chatProvider: chatProvider,
+                              );
+                            },
+                      icon: _isTyping
+                          ? const SpinKitFadingFour(
+                              color: Colors.grey,
+                              size: 18,
+                            )
+                          : Icon(
+                              Icons.send,
+                              color: _textEditingController.text.isEmpty
+                                  ? Colors.grey
+                                  : Colors.white,
+                            ),
                     ),
                   ],
                 ),
@@ -143,22 +154,24 @@ class _ChatScreenState extends State<ChatScreen> {
     );
   }
 
-  Future<void> _sendMessage(
+  Future<void> _sendMessageFCT(
       {required ModelsProvider modelProvider,
       required ChatProvider chatProvider}) async {
     {
+      final String msg = _textEditingController.text;
       try {
         setState(() {
           _isTyping = true;
-          chatProvider.addUserMessage(msg: _textEditingController.text);
+          chatProvider.addUserMessage(msg: msg);
           _textEditingController.clear();
           _focusNode.unfocus();
         });
         await chatProvider.sendMessageAndGetResponse(
-          msg: _textEditingController.text,
+          msg: msg,
           chosenModel: modelProvider.currentModel,
         );
       } catch (error) {
+        errorSnackBar(errMsg: error.toString());
         print('error--> $error');
       } finally {
         setState(() {
@@ -167,5 +180,16 @@ class _ChatScreenState extends State<ChatScreen> {
         });
       }
     }
+  }
+
+  void errorSnackBar({required String errMsg}) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: TextWidget(label: errMsg),
+        backgroundColor: Colors.red,
+        behavior: SnackBarBehavior.floating,
+        padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 30),
+      ),
+    );
   }
 }
