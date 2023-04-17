@@ -1,11 +1,13 @@
 // ignore_for_file: avoid_print
 
 import 'package:chat_gpt/constants/constants.dart';
+import 'package:chat_gpt/provider/models_provider.dart';
 import 'package:chat_gpt/services/api_service.dart';
 import 'package:chat_gpt/services/assets_manager.dart';
 import 'package:chat_gpt/widgets/chat_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:provider/provider.dart';
 
 import '../services/services.dart';
 
@@ -17,7 +19,7 @@ class ChatScreen extends StatefulWidget {
 }
 
 class _ChatScreenState extends State<ChatScreen> {
-  final bool _isTyping = true;
+  bool _isTyping = false;
 
   final TextEditingController _textEditingController = TextEditingController();
 
@@ -29,6 +31,7 @@ class _ChatScreenState extends State<ChatScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final modelProvider = Provider.of<ModelsProvider>(context, listen: false);
     return Scaffold(
       appBar: AppBar(
         title: const Text('ChatGPT'),
@@ -95,9 +98,19 @@ class _ChatScreenState extends State<ChatScreen> {
                     IconButton(
                       onPressed: () async {
                         try {
-                          await ApiService.getModels();
+                          setState(() {
+                            _isTyping = true;
+                          });
+                          await ApiService.sendMessage(
+                            message: _textEditingController.text,
+                            modelId: modelProvider.currentModel,
+                          );
                         } catch (error) {
                           print('error--> $error');
+                        } finally {
+                          setState(() {
+                            _isTyping = false;
+                          });
                         }
                       },
                       icon: const Icon(
