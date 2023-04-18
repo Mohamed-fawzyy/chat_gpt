@@ -14,13 +14,12 @@ Make sure you have the valid subscribed API KEY. <br><br>
   <a href="https://www.facebook.com/mohamed.fwzy.14" target="_blank" rel="noreferrer"> <img src="https://cdn.iconscout.com/icon/free/png-256/facebook-262-721949.png" alt="facebook" width="50" height="50"/> </a>
 </p>
 
-* **Page Visitors: Added on 1/25/2023**<br><br>
+* **Page Visitors: Added on 4/18/2023**<br><br>
 
 **Important NOTE 📝:** <br>
-This project is not a data science, but is relying on the OpenAI API which is the App that created ChatGPT.<br><br>
-
-This project covers how to integrate the Rest API in a Flutter application.<br>
-The course mostly focuses on the REST API integration in Flutter<br><br>
+* This project is not a data science, but is relying on the OpenAI API which is the App that created ChatGPT.<br>
+* This project covers how to integrate the Rest API in a Flutter application.<br>
+* The course mostly focuses on the REST API integration in Flutter<br><br>
 
 **Project prerequisites 📑:**<br>
 * Basic knowledge in programming to get started <br>
@@ -54,7 +53,8 @@ The course mostly focuses on the REST API integration in Flutter<br><br>
 
 **SnapShots 📸:** <br>
 
-https://user-images.githubusercontent.com/111665714/232645411-2763b5cc-155c-451d-bc2c-280b08b1a9ef.mp4 <br>
+https://user-images.githubusercontent.com/111665714/232645411-2763b5cc-155c-451d-bc2c-280b08b1a9ef.mp4
+<br>
 https://user-images.githubusercontent.com/111665714/232643848-c1b8bb21-8fe6-4b60-a3ec-55ebc8bb55a3.mov
 <br>
 ![Screen Shot 2023-04-18 at 00 14 54 AM](https://user-images.githubusercontent.com/111665714/232643904-9023197d-b3ab-422b-981c-0e3d14340dea.png)
