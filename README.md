@@ -17,7 +17,7 @@ Make sure you have the valid subscribed API KEY. <br><br>
 **Important NOTE 📝:** <br>
 * This project is not a data science, but is relying on the OpenAI API which is the App that created ChatGPT.<br>
 * This project covers how to integrate the Rest API in a Flutter application.<br>
-* The course mostly focuses on the REST API integration in Flutter<br><br>
+* The project mostly focuses on the REST API integration in Flutter<br><br>
 
 **Project prerequisites 📑:**<br>
 * Basic knowledge in programming to get started <br>
