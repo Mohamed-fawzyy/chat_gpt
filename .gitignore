@@ -42,3 +42,8 @@ app.*.map.json
 /android/app/debug
 /android/app/profile
 /android/app/release
+snapshots/1.mov
+snapshots/2.mov
+snapshots/232648688-b4e2a0c4-315d-408f-95e0-4b6983c94283.png
+snapshots/232648692-5cfac022-e30e-48af-b841-01a55b8a83af.png
+snapshots/232648695-f716afd3-2a9d-454c-a1c0-fd5d178b645e.png

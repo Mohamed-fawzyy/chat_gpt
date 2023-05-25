@@ -13,14 +13,14 @@ class Services {
       backgroundColor: scaffoldBackgroundColor,
       context: context,
       builder: (context) {
-        return Padding(
-          padding: const EdgeInsets.symmetric(
+        return const Padding(
+          padding: EdgeInsets.symmetric(
             vertical: 40,
             horizontal: 25,
           ),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: const [
+            children: [
               Flexible(
                 child: TextWidget(
                   label: 'Chosen Model:',

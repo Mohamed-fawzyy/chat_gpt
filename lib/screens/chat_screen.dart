@@ -1,7 +1,5 @@
 // ignore_for_file: avoid_print
 
-import 'dart:math';
-
 import 'package:chat_gpt/constants/constants.dart';
 import 'package:chat_gpt/provider/models_provider.dart';
 import 'package:chat_gpt/services/assets_manager.dart';
